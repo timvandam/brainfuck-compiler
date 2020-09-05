@@ -3,4 +3,11 @@ project(bf)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(bf src/main.cpp)
+file(GLOB_RECURSE SOURCES
+        src/**/*.cpp
+        src/**/*.h
+        src/*.cpp
+        src/*.h
+)
+
+add_executable(bf ${SOURCES})
