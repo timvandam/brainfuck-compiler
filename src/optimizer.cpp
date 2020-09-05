@@ -1,6 +1,10 @@
 #include "optimizer.h"
 #include "operation.h"
 
+void Optimizer::optimize(std::vector<Operation> &program) {
+    combineArithmetic(program);
+}
+
 void Optimizer::combineArithmetic(std::vector<Operation> &program) {
     for (auto it = program.begin(); it != program.end() - 1; ++it) {
         Operation &current = *it;

@@ -8,9 +8,7 @@
 #include "parser.h"
 
 std::vector<Operation> Parser::read(std::string &fileName) {
-    std::fstream fs;
-
-    fs.open(fileName, std::fstream::in);
+    std::fstream fs(fileName, std::fstream::in);
 
     if (!fs.is_open()) {
         std::cout << "[ERROR] Could not find '" << fileName << "'." << std::endl;
@@ -24,35 +22,18 @@ std::vector<Operation> Parser::read(std::string &fileName) {
     std::set<char> skippedChars;
     char c;
     while (fs >> c) {
-        switch (c) {
-            case '+':
-                program.push_back(Operation{Operation::OpCode::ADD, 1});
-                break;
-            case '-':
-                program.push_back(Operation{Operation::OpCode::SUBTRACT, 1});
-                break;
-            case '>':
-                program.push_back(Operation{Operation::OpCode::ADD_POINTER, 1});
-                break;
-            case '<':
-                program.push_back(Operation{Operation::OpCode::SUBTRACT_POINTER, 1});
-                break;
-            case '[':
-                program.push_back(Operation{Operation::OpCode::LOOP_START});
-                break;
-            case ']':
-                program.push_back(Operation{Operation::OpCode::LOOP_END});
-                break;
-            case '.':
-                program.push_back(Operation{Operation::OpCode::PRINT});
-                break;
-            case ',':
-                program.push_back(Operation{Operation::OpCode::SCAN});
-                break;
-
-            default:
-                skippedChars.insert(c);
-                break; // we skip invalid characters
+        if (c == '+') program.push_back(Operation{Operation::OpCode::ADD, 1});
+        else if (c == '-') program.push_back(Operation{Operation::OpCode::SUBTRACT, 1});
+        else if (c == '>') program.push_back(Operation{Operation::OpCode::ADD_POINTER, 1});
+        else if (c == '<') program.push_back(Operation{Operation::OpCode::SUBTRACT_POINTER, 1});
+        else if (c == '[') program.push_back(Operation{Operation::OpCode::LOOP_START});
+        else if (c == ']') program.push_back(Operation{Operation::OpCode::LOOP_END});
+        else if (c == '.') program.push_back(Operation{Operation::OpCode::PRINT});
+        else if (c == ',') program.push_back(Operation{Operation::OpCode::SCAN});
+        else if (c == '#') break; // # indicates EOF. Can be used to comment stuff after the program
+        else {
+            std::cout << "[ERROR] Encountered invalid symbol '" << c << "'." << std::endl;
+            exit(1);
         }
     }
     std::cout << "[INFO] Read program (INSTR_SIZE = " << program.size() << ")" << std::endl;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 struct Operation {
     enum OpCode {
         NOOP,
@@ -9,12 +11,14 @@ struct Operation {
         SUBTRACT_POINTER,
         PRINT,
         SCAN,
+        // TODO: Instead of these, use JE instructions (translate at read-time)
         LOOP_START,
         LOOP_END
     };
 
     OpCode opCode;
     int param;
+    std::string label; // label used in case of loops
 
     /**
      * Combines this ADD/SUBTRACT or ADD_POINTER/SUBTRACT_POINTER operation with another.
