@@ -4,10 +4,9 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
-#include "token.h"
 #include "lexer.h"
 
-std::vector<Token> Lexer::read(std::string &fileName) {
+std::vector<Lexer::Token> Lexer::read(std::string &fileName) {
     std::fstream fs(fileName, std::fstream::in);
 
     if (!fs.is_open()) {
@@ -22,14 +21,14 @@ std::vector<Token> Lexer::read(std::string &fileName) {
     std::set<char> skippedChars;
     char c;
     while (fs >> c) {
-        if (c == '+') program.push_back(Token{Token::OpCode::ADD, 1});
-        else if (c == '-') program.push_back(Token{Token::OpCode::SUBTRACT, 1});
-        else if (c == '>') program.push_back(Token{Token::OpCode::ADD_POINTER, 1});
-        else if (c == '<') program.push_back(Token{Token::OpCode::SUBTRACT_POINTER, 1});
-        else if (c == '[') program.push_back(Operation{Token::OpCode::LOOP_START});
-        else if (c == ']') program.push_back(Operation{Token::OpCode::LOOP_END});
-        else if (c == '.') program.push_back(Operation{Token::OpCode::PRINT});
-        else if (c == ',') program.push_back(Operation{Token::OpCode::SCAN});
+        if (c == '+') program.push_back(Token{Token::ADD});
+        else if (c == '-') program.push_back(Token{Token::SUBTRACT});
+        else if (c == '>') program.push_back(Token{Token::INC_POINTER});
+        else if (c == '<') program.push_back(Token{Token::DEC_POINTER});
+        else if (c == '[') program.push_back(Token{Token::LOOP_START});
+        else if (c == ']') program.push_back(Token{Token::LOOP_END});
+        else if (c == '.') program.push_back(Token{Token::PRINT});
+        else if (c == ',') program.push_back(Token{Token::SCAN});
         else if (c == '#') break; // # indicates EOF. Can be used to comment stuff after the program
         else {
             std::cout << "[ERROR] Encountered invalid symbol '" << c << "'." << std::endl;

@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "token.h"
 #include "lexer.h"
 #include "writer.h"
+#include "parser.h"
 
 int main(int argc, char **argv) {
     if (argc < 2) {
@@ -14,7 +14,8 @@ int main(int argc, char **argv) {
     std::string fileName = argv[1];
     std::string outputFileName = argv[2] ? argv[2] : "out.s";
 
-    std::vector<Token> program = Lexer::read(fileName);
+    std::vector<Lexer::Token> tokens = Lexer::read(fileName);
+    std::vector<Parser::Operation> program = Parser::parse(tokens);
     std::cout << "[INFO] Optimized the program to " << program.size() << " instructions." << std::endl;
 
     Writer::writeProgram(program, outputFileName);
