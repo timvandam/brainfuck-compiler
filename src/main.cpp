@@ -1,8 +1,7 @@
 #include <iostream>
 
-#include "operation.h"
-#include "parser.h"
-#include "optimizer.h"
+#include "token.h"
+#include "lexer.h"
 #include "writer.h"
 
 int main(int argc, char **argv) {
@@ -15,8 +14,7 @@ int main(int argc, char **argv) {
     std::string fileName = argv[1];
     std::string outputFileName = argv[2] ? argv[2] : "out.s";
 
-    std::vector<Operation> program = Parser::read(fileName);
-    Optimizer::optimize(program);
+    std::vector<Token> program = Lexer::read(fileName);
     std::cout << "[INFO] Optimized the program to " << program.size() << " instructions." << std::endl;
 
     Writer::writeProgram(program, outputFileName);
