@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
     Optimizer::optimize(program);
     std::cout << "[INFO] Optimized the program from " << before << " to " << program.size() << " instructions." << std::endl;
 
-    Writer::writeProgram(program, outputFileName);
+    Writer::writeProgram(program, outputFileName, 30000);
 
     return 0;
 }

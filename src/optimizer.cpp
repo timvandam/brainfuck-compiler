@@ -8,7 +8,6 @@ void Optimizer::optimize(Parser::Operation::Scope &program) {
     std::for_each(program.begin(), program.end(), [](const Operation &operation) {
         if (operation.opCode == OpCode::LOOP) {
             auto &scope = (Operation::Scope&)(operation.param);
-            int before = scope.size();
             optimize(scope);
         }
     });
