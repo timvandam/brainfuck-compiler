@@ -6,7 +6,7 @@
 namespace Lexer {
     enum Token {
         ADD,
-        SUBTRACT,
+        SUB,
         INC_POINTER,
         DEC_POINTER,
         PRINT,

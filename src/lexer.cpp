@@ -21,30 +21,16 @@ std::vector<Lexer::Token> Lexer::read(std::string &fileName) {
     std::set<char> skippedChars;
     char c;
     while (fs >> c) {
-        if (c == '+') program.push_back(Token{Token::ADD});
-        else if (c == '-') program.push_back(Token{Token::SUBTRACT});
-        else if (c == '>') program.push_back(Token{Token::INC_POINTER});
-        else if (c == '<') program.push_back(Token{Token::DEC_POINTER});
-        else if (c == '[') program.push_back(Token{Token::LOOP_START});
-        else if (c == ']') program.push_back(Token{Token::LOOP_END});
-        else if (c == '.') program.push_back(Token{Token::PRINT});
-        else if (c == ',') program.push_back(Token{Token::SCAN});
-        else if (c == '#') break; // # indicates EOF. Can be used to comment stuff after the program
-        else {
-            std::cout << "[ERROR] Encountered invalid symbol '" << c << "'." << std::endl;
-            exit(1);
-        }
+        if (c == '+') program.emplace_back(Token::ADD);
+        else if (c == '-') program.push_back(Token::SUB);
+        else if (c == '>') program.push_back(Token::INC_POINTER);
+        else if (c == '<') program.push_back(Token::DEC_POINTER);
+        else if (c == '[') program.push_back(Token::LOOP_START);
+        else if (c == ']') program.push_back(Token::LOOP_END);
+        else if (c == '.') program.push_back(Token::PRINT);
+        else if (c == ',') program.push_back(Token::SCAN);
     }
-    std::cout << "[INFO] Read program (INSTR_SIZE = " << program.size() << ")" << std::endl;
-    if (!skippedChars.empty()) {
-        std::string chars;
-        std::for_each(skippedChars.begin(), skippedChars.end(), [&chars](char c) {
-            chars += c;
-            chars += ", ";
-        });
-        chars.resize(chars.size() - 2); // remove trailing ,
-        std::cout << "[WARNING] Skipped invalid characters: " << chars << std::endl;
-    }
+    std::cout << "[INFO] Read program (TOKENS = " << program.size() << ")" << std::endl;
 
     fs.close();
 

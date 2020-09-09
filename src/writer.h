@@ -12,5 +12,5 @@ namespace Writer {
     /**
      * Writes the program, using a buffer of X bytes.
      */
-    void writeProgram(std::vector<Parser::Operation> &program, const std::string &fileName, int bufferSize = 1000);
+    void writeProgram(std::vector<Parser::Operation> &program, const std::string &fileName, int bufferSize = 5000);
 }

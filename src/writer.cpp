@@ -1,18 +1,31 @@
 #include "writer.h"
 #include <fstream>
 #include <algorithm>
+#include <iostream>
+
+const std::string PTR = "%r15";
+const std::string BUFFER = "buffer";
 
 void Writer::writeProgram(std::vector<Parser::Operation> &program, const std::string &fileName, int bufferSize) {
     std::fstream fs(fileName, std::fstream::out);
 
-//    fs << ".global main" << "\n.data\npc: .asciz \"%c\"\n.bss\n" << "buffer: .skip " << bufferSize << "\n.text\nmain:\nmovq $0, %rdx\n";
+    fs << ".global main\n"
+          ".data\n"
+          ".bss\n"
+          << BUFFER << ": .skip " << bufferSize << "\n"
+           ".text\n"
+           "main:\n"
+           "movq $0, " << PTR << "\n";
 
     // Rdx is used as pointer
+    /*std::for_each(program.begin(), program.end(), [&fs](const Parser::Operation &operation) {
+        fs << operation.toString() << "\n";
+    });*/
+
     std::for_each(program.begin(), program.end(), [&fs](const Parser::Operation &operation) {
-//        fs << operation.name << "\n";
+        fs << operation.toAsm(PTR, BUFFER);
+        fs << "\n";
     });
 
-    fs << Parser::ast(program);
-
-    return;
+    std::cout << "[INFO] Wrote assembly" << std::endl;
 }
