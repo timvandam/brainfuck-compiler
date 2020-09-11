@@ -5,14 +5,13 @@
 #include "lexer.h"
 
 namespace Parser {
-    static int loopCount = 0;
-
     enum OpCode {
         ADD,
         ADD_PTR,
         PRINT,
         SCAN,
-        LOOP
+        LOOP,
+        CLEAR // [-]
     };
 
     struct Operation {
@@ -28,8 +27,6 @@ namespace Parser {
         Operation(OpCode opCode, Scope &param);
 
         std::string toString() const;
-
-        std::string toAsm(const std::string &PTR, const std::string &BUFFER) const;
     };
 
     // TODO: Offset to indicate offset from current pointer value

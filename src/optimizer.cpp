@@ -3,14 +3,16 @@
 #include "optimizer.h"
 
 void Optimizer::optimize(Parser::Operation::Scope &program) {
-    mergeAdd(program);
-    mergeAddPtr(program);
-    std::for_each(program.begin(), program.end(), [](const Operation &operation) {
+    std::for_each(program.begin(), program.end(), [](Operation &operation) {
         if (operation.opCode == OpCode::LOOP) {
             auto &scope = (Operation::Scope&)(operation.param);
-            optimize(scope);
+            if (scope.size() == 1 && scope[0].opCode == OpCode::ADD && std::get<int>(scope[0].param) == -1) {
+                operation.opCode = OpCode::CLEAR; // Replace loop with clear
+            } else optimize(scope);
         }
     });
+    mergeAdd(program);
+    mergeAddPtr(program);
 }
 
 void Optimizer::mergeAdd(Parser::Operation::Scope &program) {
